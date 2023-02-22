@@ -5,6 +5,36 @@ import { faThumbsUp as regThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
 // import PetStoreNav from '../../App.js';
 
+//call graphql api to get list of items
+const getItems = () => {
+  console.log("GRAPHQL API CALL");
+  const query = `
+  {
+    list {
+        id
+        title
+        description
+        includes
+        intended
+        color
+        material
+        url
+        price
+    }
+}
+  `;
+  return fetch('http://localhost:9090/catalog', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({query})
+  })
+  .then(r => r.json())
+  .then(data => data.list);
+}
+
 // Component to render the item list
 const PetItemList = () => {
     const itemPrice = {
@@ -12,123 +42,34 @@ const PetItemList = () => {
       fontWeight: 'bold',
       marginRight: '50px'
     };
+
+    const items = [{"id":1, "title":"Top Paw Valentine's Day Single Dog Sweater", "description":"Top Paw Valentine's Day Single Dog Sweater is a cute and cozy way to show your dog some love this Valentine's Day. This sweater features a red heart on the back and a red bow on the front. It's made of soft, comfortable cotton and polyester blend fabric. It's machine washable for easy care. This sweater is available in sizes XS, S, M, L, XL and XXL...", "includes":"1 Sweater", "intended":"Dogs", "color":"Red, White, Black", "material":"100% Acrylic", "url":"/static/media/item-1.0483b98029449b6a1df1.png", "price":14.99}, {"id":2, "title":"Arcadia Trail Dog Windbreaker", "description":"The right jacket for your pet while the two of you are out on the trail together can make all the difference when it comes to both warmth and comfort. This Arcadia Trail Windbreaker zippers shut, features a packable hood, has an opening for a leash, and even comes with a waste bag dispenser and waste bags. Comfortable and versatile, this unique jacket makes a great choice for the outdoor adventures you share with your pup", "includes":"1 Windbreaker Jacket", "intended":"Dogs", "color":"Available in Pink or Navy", "material":"No material", "url":"/static/media/item-2.1d179427447d8296a0b4.png", "price":29.99}, {"id":3, "title":"Top Paw Valentine's Day Kisses Dog Tee and Bandana", "description":"Dress your pup up appropriately for Valentine's Day with this Top Paw Valentine's Day Kisses Dog Tee and Bandana. This tee and bandana slip on and off easily while offering a comfortable fit, and offers kisses from your favorite furry friend", "includes":"1 Tee and Bandana", "intended":"Dogs", "color":"White, Red, Black", "material":"T-Shirt: 65% Polyester, 35% Cotton; Bandana: 100% Cotton", "url":"/static/media/item-3.7334877b874a44c25b54.png", "price":7.47}];
+    //console.log("ITEMS " + JSON.stringify(items));
+
+    const listItems = items.map((item) => {
+      console.log("ITEM " + item.title);
+      return <Col key={item.id}>
+      <img src={item.url} width="300" alt="dog"/><br />
+      <h4>{item.title}</h4>
+      <p>{item.description}</p>
+      <p>
+                <b>Includes: </b> {item.includes}<br />
+                <b>Intended For:</b> {item.intended}<br />
+                <b>Color:</b> {item.color}<br />
+                <b>Material: </b> {item.material}<br />
+              </p>
+              <br />
+              <span style={itemPrice}>$ {item.price}</span> <Button variant="danger">Add to cart</Button>
+              <br /><br />
+              Follow updates &nbsp;&nbsp;<FontAwesomeIcon icon={regThumbsUp} /> 
+    </Col>
+  });
+
+
     return (
       <>
       <Container>
-        <Row>
-  
-  {/* 
-  
-  Item list that's displayed on the page follow the following format:
-  
-          <Col>
-            <img src={require('./item-1.png')} width="300" alt="dog"/><br />
-            <h4>Title....</h4>
-            <p>Description</p>
-            <p>
-              <b>Includes: </b> 1 Sweater<br />
-              <b>Intended For:</b> Dogs<br />
-              <b>Color:</b> Red, White, Black<br />
-              <b>Material: </b> 100% Acrylic<br />
-            </p>
-            <br />
-            <span style={itemPrice}>$ 14.99</span> <Button variant="danger">Add to cart</Button>
-            <br /><br />
-            Follow updates &nbsp;&nbsp;<FontAwesomeIcon icon={regThumbsUp} /> 
-          </Col>
-  
-  You can use this as a template to create the other items from data you get from the API.
-  
-  Displaying a list programmatically in React
-  -------------------------------------------
-  
-  Let's assume the data you get from the API is in the following format:
-      [
-        {
-          itemID: 1,
-          itemName: "Top Paw® Valentine's Day Single Dog Sweater",
-          itemDesc: "Dress your pup up appropriately ....",
-          itemImage: "http://some/path/to/item-1.png",
-          stockDetails: {
-            includes: "1 Sweater",
-            intendedFor: "Dogs",
-            color: "Red, White, Black",
-            material: "100% Acrylic"
-          }
-        },
-        ...
-      ]
-  
-  In react assign this to variable. You would have to replace the assignment with the API call.
-  
-  const items = [
-    {itemId: 1, itemName: ..., itemDesc: ..., itemImage: ..., ...}
-    {itemId: 2, itemName: ..., itemDesc: ..., itemImage: ..., ...}
-  ];
-  
-  Now you can use the items variable to display the list of items.
-  
-  const listItems = items.map((item) =>
-    <Col>
-      <img src={item.itemImage} width="300" alt="dog"/><br />
-      <h4>{item.itemName}</h4>
-      <p>{item.itemDesc}</p>
-      <p>
-        <b>Includes: </b> {item.stockDetails.includes}<br />
-        <b>Intended For:</b> {item.stockDetails.intendedFor}<br />
-        ....
-    </Col>
-  );
-  
-  return (
-    <Row>{listItems}</Row>
-  );
-  
-    */}
-          <Col>
-            <img src={require('./item-1.png')} width="300" alt="dog"/><br />
-            <h4>Top Paw® Valentine's Day Single Dog Sweater</h4>
-            <p>Dress your pup up appropriately for Valentine's Day with this Top Paw Valentine's Day Kisses Dog Sweater. This sweet sweater slips on and off easily while offering a comfortable fit, and lets it be known that your pup is single and ready to mingle</p>
-            <p>
-              <b>Includes: </b> 1 Sweater<br />
-              <b>Intended For:</b> Dogs<br />
-              <b>Color:</b> Red, White, Black<br />
-              <b>Material: </b> 100% Acrylic<br />
-            </p>
-            <br />
-            <span style={itemPrice}>$ 14.99</span> <Button variant="danger">Add to cart</Button>
-            <br /><br />
-            Follow updates &nbsp;&nbsp;<FontAwesomeIcon icon={regThumbsUp} /> 
-          </Col>
-          <Col>
-            <img src={require('./item-2.png')} width="300" alt="dog1"/><br />
-            <h4>Arcadia Trail™ Dog Windbreaker</h4>
-            <p>The right jacket for your pet while the two of you are out on the trail together can make all the difference when it comes to both warmth and comfort. This Arcadia Trail Windbreaker zippers shut, features a packable hood, has an opening for a leash, and even comes with a waste bag dispenser and waste bags. Comfortable and versatile, this unique jacket makes a great choice for the outdoor adventures you share with your pup</p>
-            <p>
-              <b>Includes: </b> 1 Windbreaker Jacket<br />
-              <b>Intended For:</b> Dogs<br />
-              <b>Color:</b> Available in Pink or Navy<br />
-            </p>
-            <br />
-            <span style={itemPrice}>$ 29.99</span> <Button variant="danger">Add to cart</Button>
-            <br /><br />Following updates &nbsp;&nbsp;<FontAwesomeIcon icon={solidThumbsUp} />
-          </Col>
-          <Col>
-            <img src={require('./item-3.png')} width="300" alt="dog-bandana"/><br />
-            <h4>Top Paw® Valentine's Day Kisses Dog Tee and Bandana</h4>
-            <p>Dress your pup up appropriately for Valentine's Day with this Top Paw Valentine's Day Kisses Dog Tee and Bandana. This tee and bandana slip on and off easily while offering a comfortable fit, and offers kisses from your favorite furry friend</p>
-            <p>
-              <b>Includes: </b> 1 Tee and Bandana<br />
-              <b>Intended For:</b> Dogs<br />
-              <b>Color:</b> White, Red, Black<br />
-              <b>Material: </b> T-Shirt: 65% Polyester, 35% Cotton; Bandana: 100% Cotton<br />
-            </p>
-            <br />
-            <span style={itemPrice}>$ 7.47</span> <Button variant="danger">Add to cart</Button>
-            <br /><br />
-            Follow updates &nbsp;&nbsp;<FontAwesomeIcon icon={regThumbsUp} /> 
-          </Col>
-        </Row>
+      <Row>{listItems}</Row>
       </Container>
     </>
     );
