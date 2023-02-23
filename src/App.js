@@ -11,10 +11,16 @@ import Catalog from './components/Catalog/Catalog.js';
 import MyCart from './components/MyCart/Cart.js';
 import Admin from './components/Admin/Admin.js';
 
+import { useAuthContext } from "@asgardeo/auth-react";
+
 // Component to render the login/signup/logout menu
 const RightLoginSignupMenu = () => {
+
+  const { state, signIn, signOut } = useAuthContext();
+
   // Based on Asgardeo SDK, set a variable like below to check and conditionally render the menu
-  let isLoggedIn = false;
+  let isLoggedIn = state.isAuthenticated;
+  console.log("USERNAME: " + state.email);
 
   // Host the menu content and return it at the end of the function
   let menu;
@@ -23,13 +29,13 @@ const RightLoginSignupMenu = () => {
   if (isLoggedIn) {
     menu =  <>
       <Nav>
-      <Nav.Link href="#deets">Logout</Nav.Link>
-      <Nav.Link href="#deets"><FontAwesomeIcon icon={faUser} /></Nav.Link></Nav>
+      <Nav.Link onClick={() => signOut()}>Logout</Nav.Link>
+      <Nav.Link href="#deets"><FontAwesomeIcon icon={faUser} />email: {state.email}</Nav.Link></Nav>
     </>
   } else {
     menu = <>
       <Nav>
-      <Nav.Link href="#deets">Login</Nav.Link>
+      <Nav.Link onClick={() => signIn()}>Login</Nav.Link>
       <Nav.Link href="#deets">Sign Up</Nav.Link></Nav>
     </>
   }
