@@ -29,20 +29,18 @@ const PetItemList = () => {
   const [isLoading, setLoading] = useState(true); // Loading state
   const [pokemon, setPokemon] = useState(); // pokemon state
   
+  const authToken = 'eyJ4NXQiOiJPVE15WXpVMU9XVTVNRE16TlRRd01UTXdaVFJoT0dReFptUm1aakl5WlRnMVl6UXhOelZtWlROa01qUmpOMk13Tm1SbVlXSTJaV0V3T1dJMk9ETTVNdyIsImtpZCI6Ik9UTXlZelUxT1dVNU1ETXpOVFF3TVRNd1pUUmhPR1F4Wm1SbVpqSXlaVGcxWXpReE56Vm1aVE5rTWpSak4yTXdObVJtWVdJMlpXRXdPV0kyT0RNNU13X1JTMjU2IiwidHlwIjoiYXQrand0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4OWEzYjI3OS00OGE0LTQ3MTQtYTQxNS1mNmI0ZmIxZjNlYjAiLCJhdXQiOiJBUFBMSUNBVElPTiIsImF1ZCI6Inp6MXc5ZFRROXRKUHhCRkF2NFZ6eWd1MU1MQWEiLCJuYmYiOjE2NzcxNTIxMzgsImF6cCI6Inp6MXc5ZFRROXRKUHhCRkF2NFZ6eWd1MU1MQWEiLCJpc3MiOiJodHRwczpcL1wvYXBpLmFzZ2FyZGVvLmlvXC90XC9kYmdnMVwvb2F1dGgyXC90b2tlbiIsImV4cCI6MjY3NzE1MjEzNywiaWF0IjoxNjc3MTUyMTM4LCJqdGkiOiI5Y2M0MzM2Yy1iNmRhLTQ5ZDctODdmMS02NmRkZDMwZWU3NDQiLCJjbGllbnRfaWQiOiJ6ejF3OWRUUTl0SlB4QkZBdjRWenlndTFNTEFhIn0.arvOAWddtdJD-HIcZIefro1qJXpIeIPXxrpHHwjUtpIvMbetyq0-ziSnM0gl9TkcFw8NlgiQGOi0nRWFjghlPFMSSs-0H8H8djrQX0esGhNQBiuOleehpGa2beTS0ZCpKwb9xXUhoB8mehUq3QS43UUeMQFSTQgz6DE_yUSd1lvsAZ5hH93Gp9hvNuxpaRC0myioSuSh-9f9b0QCXYaF5YxAc9CTdi6tyNr9THuF1kSzb9aywmoJUiH3K4hMLCTW_M2Sec-ObcT5HwaV-AYCcj0_daQGbMoP1WYdtcybPjm5VeDTEcjVCA2lmAfaftLlghPKXljYFAQIC2pb992Mjw';
 
   console.log(items);
   if (items == undefined) {
     axios({
-      url: 'http://localhost:9090/catalog',
+      url: 'https://1e7fc97e-8568-4827-9933-f0cfd038f4ed-dev.e1-us-east-azure.choreoapis.dev/vfyw/ecommercegraphqlapi/1.0.0/',
       method: 'post',
       data: query,
       headers: {
-        'Content-Type': 'application/json',
-        // 'Content-Length': data.length,
-        // Authorization:
-        //   'Apikey DONOTSENDAPIKEYS',
-      }
-    
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+      }    
     }).then((result) => {
       console.log("Fez a CALL");
       items = result.data;
