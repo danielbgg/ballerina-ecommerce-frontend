@@ -3,5 +3,5 @@
     "baseUrl": "https://api.asgardeo.io/t/dbgg1",
     "signInRedirectURL": "http://localhost:3000",
     "signOutRedirectURL": "http://localhost:3000",
-    "scope": ["profile", "email"]
+    "scope": ["profile", "email", "groups"]
 }

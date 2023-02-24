@@ -20,7 +20,7 @@ const RightLoginSignupMenu = () => {
 
   // Based on Asgardeo SDK, set a variable like below to check and conditionally render the menu
   let isLoggedIn = state.isAuthenticated;
-  console.log("USERNAME: " + state.email);
+  console.log("USERNAME: " + state.email); 
 
   // Host the menu content and return it at the end of the function
   let menu;
